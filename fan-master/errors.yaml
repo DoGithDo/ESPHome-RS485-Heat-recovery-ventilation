@@ -1,0 +1,65 @@
+# counting errors on I2C, showing last I2C error
+
+sensor:
+
+  - platform: template
+    id: count_receives
+    name: "Total receives/sends"
+    device_class: ""
+    state_class: total_increasing
+    icon: mdi:counter
+    accuracy_decimals: 0
+    entity_category: diagnostic
+    web_server_sorting_weight: 202
+    update_interval: never
+
+  - platform: template
+    id: count_errors_total_sensor
+    name: "Errors Serial: Total errors"
+    device_class: ""
+    state_class: total_increasing
+    icon: mdi:counter
+    web_server_sorting_weight: 203
+    accuracy_decimals: 0
+    entity_category: diagnostic
+    update_interval: ${update_interval_short}
+    lambda: |-
+      return (id(count_error_wrong_delimiter_sensor).state + id(count_error_wrong_checksum_sensor).state);
+
+  - platform: template
+    id: count_error_wrong_delimiter_sensor
+    name: "Error Serial: Wrong delimiter"
+    device_class: ""
+    state_class: total_increasing
+    icon: mdi:counter
+    web_server_sorting_weight: 206
+    accuracy_decimals: 0
+    entity_category: diagnostic
+    update_interval: never
+
+  - platform: template
+    id: count_error_wrong_checksum_sensor
+    name: "Error Serial: Wrong checksum"
+    device_class: ""
+    state_class: total_increasing
+    icon: mdi:counter
+    web_server_sorting_weight: 207
+    accuracy_decimals: 0
+    entity_category: diagnostic
+    update_interval: never
+
+
+  - platform: template
+    name: "Success ratio Serial"
+    id: success_ratio_serial
+    device_class: ""
+    state_class: measurement
+    entity_category: diagnostic
+    icon: mdi:alert-circle-outline
+    unit_of_measurement: "%"
+    web_server_sorting_weight: 201
+    accuracy_decimals: 0
+    update_interval: ${update_interval_short}
+    lambda: |-
+      float quota = 100 - (100 * id(count_errors_total_sensor).state / id(count_receives).state) ;
+      return quota;
