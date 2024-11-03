@@ -34,7 +34,6 @@ packages:
 logger:
   level: ${log_level}
 
-# Triggers button "Visit" for the device on dashboard. Future: use password
 web_server:
   include_internal: ${show_internal}
   log: ${show_log}
@@ -53,7 +52,7 @@ esphome:
     - "fan-common/handler-common.h"
     
   on_boot:
-    priority: -100.0 #initialize wire at the end of the boot
+    priority: -100.0 #initialize at the end of the boot
     then:
       - lambda: |-
           initialize_serial();
@@ -71,8 +70,7 @@ esphome:
 
 interval:
   - interval: 0.1s
-    then:
-    # analyse_receive_queue not working if in on_loop, performance issues       
+    then:     
       - lambda: |-
           analyse_receive_queue();
   - interval: ${update_interval_short}
