@@ -1,4 +1,4 @@
-# ESPHome-RS485-Heat-recovery-ventilation
+# ESPHome-RS485 for Heat recovery ventilation
 # Overview <!-- omit from toc -->
 This project describes the smartification of a heat recovery ventilation system. ESPHome and RS485 are used between master and slave. In a first version, this project tried to use I2C, but failed (see https://github.com/DoGithDo/ESPHome-I2C-Master-Slave).
 
